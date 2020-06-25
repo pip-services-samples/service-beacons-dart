@@ -1,4 +1,4 @@
-library pip_data_microservice_dart;
+library pip_services_beacons_dart;
 
 export './src/data/version1/data.dart';
 export './src/persistence/persistence.dart';

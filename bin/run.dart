@@ -1,4 +1,4 @@
-import 'package:pip_data_microservice_dart/pip_data_microservice_dart.dart';
+import 'package:pip_services_beacons_dart/pip_services_beacons_dart.dart';
 
 void main(List<String> argument) {
   try {
