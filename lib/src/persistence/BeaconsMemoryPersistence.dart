@@ -11,7 +11,7 @@ class BeaconsMemoryPersistence
     maxPageSize = 1000;
   }
 
-  Function composeFilter(FilterParams filter) {
+  Function composeFilter(FilterParams? filter) {
     filter = filter ?? FilterParams();
 
     var id = filter.getAsNullableString('id');
@@ -21,7 +21,7 @@ class BeaconsMemoryPersistence
     var labelLike = filter.getAsNullableString('label_like');
     var udis = filter.getAsObject('udis');
     if (udis != null && udis is String) {
-      udis = (udis as String).split(',');
+      udis = udis.split(',');
     }
     if (udis != null && !(udis is List)) {
       udis = null;
@@ -48,7 +48,7 @@ class BeaconsMemoryPersistence
       if (udi != null && item.udi != udi) {
         return false;
       }
-      if (udis != null && (udis as List).indexOf(item.udi) < 0) {
+      if (udis != null && !(udis as List).contains(item.udi)) {
         return false;
       }
       return true;
@@ -57,13 +57,13 @@ class BeaconsMemoryPersistence
 
   @override
   Future<DataPage<BeaconV1>> getPageByFilter(
-      String correlationId, FilterParams filter, PagingParams paging) {
+      String? correlationId, FilterParams? filter, PagingParams? paging) {
     return super
         .getPageByFilterEx(correlationId, composeFilter(filter), paging, null);
   }
 
   @override
-  Future<BeaconV1> getOneByUdi(String correlationId, String udi) async {
+  Future<BeaconV1> getOneByUdi(String? correlationId, String udi) async {
     var item = items.firstWhere((item) => item.udi == udi);
 
     if (item != null) {

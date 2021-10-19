@@ -13,7 +13,7 @@ class BeaconsMongoDbPersistence
     maxPageSize = 1000;
   }
 
-  dynamic composeFilter(FilterParams filter) {
+  dynamic composeFilter(FilterParams? filter) {
     filter = filter ?? FilterParams();
 
     var criteria = [];
@@ -46,7 +46,7 @@ class BeaconsMongoDbPersistence
 
     var udis = filter.getAsObject('udis');
     if (udis is String) {
-      udis = (udis as String).split(',');
+      udis = udis.split(',');
     }
     if (udis is List) {
       criteria.add({
@@ -59,13 +59,13 @@ class BeaconsMongoDbPersistence
 
   @override
   Future<DataPage<BeaconV1>> getPageByFilter(
-      String correlationId, FilterParams filter, PagingParams paging) async {
+      String? correlationId, FilterParams? filter, PagingParams? paging) async {
     return super
         .getPageByFilterEx(correlationId, composeFilter(filter), paging, null);
   }
 
   @override
-  Future<BeaconV1> getOneByUdi(String correlationId, String udi) async {
+  Future<BeaconV1?> getOneByUdi(String? correlationId, String udi) async {
     var filter = {'udi': udi};
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
@@ -74,7 +74,7 @@ class BeaconsMongoDbPersistence
     }
     query.raw(selector);
 
-    var item = await collection.findOne(filter);
+    var item = await collection!.findOne(filter);
 
     if (item == null) {
       logger.trace(correlationId, 'Nothing found from %s with id = %s',

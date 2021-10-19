@@ -9,9 +9,9 @@ import '../../src/data/version1/BeaconV1.dart';
 class BeaconsCommandSet extends CommandSet {
   IBeaconsController _controller;
 
-  BeaconsCommandSet(IBeaconsController controller) : super() {
-    _controller = controller;
-
+  BeaconsCommandSet(IBeaconsController controller)
+      : _controller = controller,
+        super() {
     addCommand(_makeGetBeaconsCommand());
     addCommand(_makeGetBeaconByIdCommand());
     addCommand(_makeGetBeaconByUdiCommand());
@@ -27,7 +27,7 @@ class BeaconsCommandSet extends CommandSet {
         ObjectSchema(true)
             .withOptionalProperty('filter', FilterParamsSchema())
             .withOptionalProperty('paging', PagingParamsSchema()),
-        (String correlationId, Parameters args) {
+        (String? correlationId, Parameters args) {
       var filter = FilterParams.fromValue(args.get('filter'));
       var paging = PagingParams.fromValue(args.get('paging'));
       return _controller.getBeacons(correlationId, filter, paging);
@@ -37,7 +37,7 @@ class BeaconsCommandSet extends CommandSet {
   ICommand _makeGetBeaconByIdCommand() {
     return Command('get_beacon_by_id',
         ObjectSchema(true).withRequiredProperty('beacon_id', TypeCode.String),
-        (String correlationId, Parameters args) {
+        (String? correlationId, Parameters args) {
       var beaconId = args.getAsString('beacon_id');
       return _controller.getBeaconById(correlationId, beaconId);
     });
@@ -46,7 +46,7 @@ class BeaconsCommandSet extends CommandSet {
   ICommand _makeGetBeaconByUdiCommand() {
     return Command('get_beacon_by_udi',
         ObjectSchema(true).withRequiredProperty('udi', TypeCode.String),
-        (String correlationId, Parameters args) {
+        (String? correlationId, Parameters args) {
       var udi = args.getAsString('udi');
       return _controller.getBeaconByUdi(correlationId, udi);
     });
@@ -58,7 +58,7 @@ class BeaconsCommandSet extends CommandSet {
         ObjectSchema(true)
             .withRequiredProperty('site_id', TypeCode.String)
             .withRequiredProperty('udis', ArraySchema(TypeCode.String)),
-        (String correlationId, Parameters args) async {
+        (String? correlationId, Parameters args) async {
       var siteId = args.getAsString('site_id');
       var udis = List<String>.from(args.getAsObject('udis'));
       return _controller.calculatePosition(correlationId, siteId, udis);
@@ -68,7 +68,7 @@ class BeaconsCommandSet extends CommandSet {
   ICommand _makeCreateBeaconCommand() {
     return Command('create_beacon',
         ObjectSchema(true).withRequiredProperty('beacon', BeaconV1Schema()),
-        (String correlationId, Parameters args) {
+        (String? correlationId, Parameters args) {
       var beacon = BeaconV1();
       beacon.fromJson(args.get('beacon'));
       return _controller.createBeacon(correlationId, beacon);
@@ -78,7 +78,7 @@ class BeaconsCommandSet extends CommandSet {
   ICommand _makeUpdateBeaconCommand() {
     return Command('update_beacon',
         ObjectSchema(true).withRequiredProperty('beacon', BeaconV1Schema()),
-        (String correlationId, Parameters args) {
+        (String? correlationId, Parameters args) {
       var beacon = BeaconV1();
       beacon.fromJson(args.get('beacon'));
       return _controller.updateBeacon(correlationId, beacon);
@@ -88,7 +88,7 @@ class BeaconsCommandSet extends CommandSet {
   ICommand _makeDeleteBeaconByIdCommand() {
     return Command('delete_beacon_by_id',
         ObjectSchema(true).withRequiredProperty('beacon_id', TypeCode.String),
-        (String correlationId, Parameters args) {
+        (String? correlationId, Parameters args) {
       var beaconId = args.getAsString('beacon_id');
       return _controller.deleteBeaconById(correlationId, beaconId);
     });

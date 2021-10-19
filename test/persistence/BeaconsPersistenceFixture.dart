@@ -38,19 +38,19 @@ final BEACON3 = BeaconV1(
     radius: 50.0);
 
 class BeaconsPersistenceFixture {
-  IBeaconsPersistence _persistence;
+  late IBeaconsPersistence _persistence;
 
   BeaconsPersistenceFixture(IBeaconsPersistence persistence) {
     expect(persistence, isNotNull);
     _persistence = persistence;
   }
 
-  void _testCreateBeacons() async {
+  Future _testCreateBeacons() async {
     // Create the first beacon
     var beacon = await _persistence.create(null, BEACON1);
 
     expect(beacon, isNotNull);
-    expect(BEACON1.udi, beacon.udi);
+    expect(BEACON1.udi, beacon!.udi);
     expect(BEACON1.site_id, beacon.site_id);
     expect(BEACON1.type, beacon.type);
     expect(BEACON1.label, beacon.label);
@@ -59,7 +59,7 @@ class BeaconsPersistenceFixture {
     // Create the second beacon
     beacon = await _persistence.create(null, BEACON2);
     expect(beacon, isNotNull);
-    expect(BEACON2.udi, beacon.udi);
+    expect(BEACON2.udi, beacon!.udi);
     expect(BEACON2.site_id, beacon.site_id);
     expect(BEACON2.type, beacon.type);
     expect(BEACON2.label, beacon.label);
@@ -68,14 +68,14 @@ class BeaconsPersistenceFixture {
     // Create the third beacon
     beacon = await _persistence.create(null, BEACON3);
     expect(beacon, isNotNull);
-    expect(BEACON3.udi, beacon.udi);
+    expect(BEACON3.udi, beacon!.udi);
     expect(BEACON3.site_id, beacon.site_id);
     expect(BEACON3.type, beacon.type);
     expect(BEACON3.label, beacon.label);
     expect(beacon.center, isNotNull);
   }
 
-  void testCrudOperations() async {
+  Future testCrudOperations() async {
     BeaconV1 beacon1;
 
     // Create items
@@ -94,25 +94,25 @@ class BeaconsPersistenceFixture {
 
     var beacon = await _persistence.update(null, beacon1);
     expect(beacon, isNotNull);
-    expect(beacon1.id, beacon.id);
+    expect(beacon1.id, beacon!.id);
     expect('ABC', beacon.label);
 
     // Get beacon by udi
-    beacon = await _persistence.getOneByUdi(null, beacon1.udi);
+    beacon = await _persistence.getOneByUdi(null, beacon1.udi!);
     expect(beacon, isNotNull);
-    expect(beacon1.id, beacon.id);
+    expect(beacon1.id, beacon!.id);
 
     // Delete the beacon
-    beacon = await _persistence.deleteById(null, beacon1.id);
+    beacon = await _persistence.deleteById(null, beacon1.id!);
     expect(beacon, isNotNull);
-    expect(beacon1.id, beacon.id);
+    expect(beacon1.id, beacon!.id);
 
     // Try to get deleted beacon
-    beacon = await _persistence.getOneById(null, beacon1.id);
+    beacon = await _persistence.getOneById(null, beacon1.id!);
     expect(beacon, isNull);
   }
 
-  void testGetWithFilters() async {
+  Future testGetWithFilters() async {
     // Create items
 
     await _testCreateBeacons();

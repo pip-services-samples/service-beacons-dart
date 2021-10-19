@@ -6,8 +6,8 @@ import './BeaconsPersistenceFixture.dart';
 
 void main() {
   group('BeaconsMemoryPersistence', () {
-    BeaconsMemoryPersistence persistence;
-    BeaconsPersistenceFixture fixture;
+    late BeaconsMemoryPersistence persistence;
+    late BeaconsPersistenceFixture fixture;
 
     setUp(() async {
       persistence = BeaconsMemoryPersistence();

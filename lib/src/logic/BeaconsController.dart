@@ -10,8 +10,8 @@ import './BeaconsCommandSet.dart';
 
 class BeaconsController
     implements IBeaconsController, IConfigurable, IReferenceable, ICommandable {
-  IBeaconsPersistence persistence;
-  BeaconsCommandSet commandSet;
+  IBeaconsPersistence? persistence;
+  BeaconsCommandSet? commandSet;
 
   BeaconsController();
 
@@ -27,35 +27,37 @@ class BeaconsController
   @override
   CommandSet getCommandSet() {
     commandSet ??= BeaconsCommandSet(this);
-    return commandSet;
+    return commandSet!;
   }
 
   @override
-  Future<DataPage<BeaconV1>> getBeacons(
-      String correlationId, FilterParams filter, PagingParams paging) {
-    return persistence.getPageByFilter(correlationId, filter, paging);
+  Future<DataPage<BeaconV1>?> getBeacons(
+      String? correlationId, FilterParams? filter, PagingParams? paging) async {
+    return await persistence!.getPageByFilter(correlationId, filter, paging);
   }
 
   @override
-  Future<BeaconV1> getBeaconById(String correlationId, String beaconId) {
-    return persistence.getOneById(correlationId, beaconId);
+  Future<BeaconV1?> getBeaconById(
+      String? correlationId, String beaconId) async {
+    return await persistence!.getOneById(correlationId, beaconId);
   }
 
   @override
-  Future<BeaconV1> getBeaconByUdi(String correlationId, String beaconId) {
-    return persistence.getOneByUdi(correlationId, beaconId);
+  Future<BeaconV1?> getBeaconByUdi(
+      String? correlationId, String beaconId) async {
+    return await persistence!.getOneByUdi(correlationId, beaconId);
   }
 
   @override
-  Future<Map<String, dynamic>> calculatePosition(
-      String correlationId, String siteId, List<String> udis) async {
+  Future<Map<String, dynamic>?> calculatePosition(
+      String? correlationId, String siteId, List<String>? udis) async {
     var beacons = <BeaconV1>[];
     var position = <String, dynamic>{};
     if (udis == null || udis.isEmpty) {
       return null;
     }
 
-    var page = await persistence.getPageByFilter(correlationId,
+    var page = await persistence!.getPageByFilter(correlationId,
         FilterParams.fromTuples(['site_id', siteId, 'udis', udis]), null);
     beacons = page != null ? page.data : [];
 
@@ -65,10 +67,10 @@ class BeaconsController
 
     for (var beacon in beacons) {
       if (beacon.center != null &&
-          beacon.center['type'] == 'Point' &&
-          beacon.center['coordinates'] is List) {
-        lng += (beacon.center['coordinates'] as List)[0];
-        lat += (beacon.center['coordinates'] as List)[1];
+          beacon.center!['type'] == 'Point' &&
+          beacon.center!['coordinates'] is List) {
+        lng += (beacon.center!['coordinates'] as List)[0];
+        lat += (beacon.center!['coordinates'] as List)[1];
         count += 1;
       }
     }
@@ -85,21 +87,22 @@ class BeaconsController
   }
 
   @override
-  Future<BeaconV1> createBeacon(String correlationId, BeaconV1 beacon) {
+  Future<BeaconV1?> createBeacon(String? correlationId, BeaconV1 beacon) async {
     beacon.id = beacon.id ?? IdGenerator.nextLong();
     beacon.type = beacon.type ?? BeaconTypeV1.unknown;
-    return persistence.create(correlationId, beacon);
+    return await persistence!.create(correlationId, beacon);
   }
 
   @override
-  Future<BeaconV1> updateBeacon(String correlationId, BeaconV1 beacon) {
+  Future<BeaconV1?> updateBeacon(String? correlationId, BeaconV1 beacon) async {
     beacon.type = beacon.type ?? BeaconTypeV1.unknown;
 
-    return persistence.update(correlationId, beacon);
+    return await persistence!.update(correlationId, beacon);
   }
 
   @override
-  Future<BeaconV1> deleteBeaconById(String correlationId, String beaconId) {
-    return persistence.deleteById(correlationId, beaconId);
+  Future<BeaconV1?> deleteBeaconById(
+      String? correlationId, String beaconId) async {
+    return await persistence!.deleteById(correlationId, beaconId);
   }
 }

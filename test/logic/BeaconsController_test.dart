@@ -27,8 +27,8 @@ final BEACON2 = BeaconV1(
 
 void main() {
   group('BeaconsController', () {
-    BeaconsMemoryPersistence persistence;
-    BeaconsController controller;
+    late BeaconsMemoryPersistence persistence;
+    late BeaconsController controller;
 
     setUp(() async {
       persistence = BeaconsMemoryPersistence();
@@ -59,7 +59,7 @@ void main() {
       // Create the first beacon
       var beacon = await controller.createBeacon(null, BEACON1);
       expect(beacon, isNotNull);
-      expect(BEACON1.udi, beacon.udi);
+      expect(BEACON1.udi, beacon!.udi);
       expect(BEACON1.site_id, beacon.site_id);
       expect(BEACON1.type, beacon.type);
       expect(BEACON1.label, beacon.label);
@@ -68,7 +68,7 @@ void main() {
       // Create the second beacon
       beacon = await controller.createBeacon(null, BEACON2);
       expect(beacon, isNotNull);
-      expect(BEACON2.udi, beacon.udi);
+      expect(BEACON2.udi, beacon!.udi);
       expect(BEACON2.site_id, beacon.site_id);
       expect(BEACON2.type, beacon.type);
       expect(BEACON2.label, beacon.label);
@@ -78,7 +78,7 @@ void main() {
       var page =
           await controller.getBeacons(null, FilterParams(), PagingParams());
       expect(page, isNotNull);
-      expect(page.data.length, 2);
+      expect(page!.data.length, 2);
       beacon1 = page.data[0];
 
       // Update the beacon
@@ -86,21 +86,21 @@ void main() {
 
       beacon = await controller.updateBeacon(null, beacon1);
       expect(beacon, isNotNull);
-      expect(beacon1.id, beacon.id);
+      expect(beacon1.id, beacon!.id);
       expect('ABC', beacon.label);
 
       // Get beacon by udi
-      beacon = await controller.getBeaconByUdi(null, beacon1.udi);
+      beacon = await controller.getBeaconByUdi(null, beacon1.udi!);
       expect(beacon, isNotNull);
-      expect(beacon1.id, beacon.id);
+      expect(beacon1.id, beacon!.id);
 
       // Delete the beacon
-      beacon = await controller.deleteBeaconById(null, beacon1.id);
+      beacon = await controller.deleteBeaconById(null, beacon1.id!);
       expect(beacon, isNotNull);
-      expect(beacon1.id, beacon.id);
+      expect(beacon1.id, beacon!.id);
 
       // Try to get deleted beacon
-      beacon = await controller.getBeaconById(null, beacon1.id);
+      beacon = await controller.getBeaconById(null, beacon1.id!);
       expect(beacon, isNull);
     });
 
@@ -108,7 +108,7 @@ void main() {
       // Create the first beacon
       var beacon = await controller.createBeacon(null, BEACON1);
       expect(beacon, isNotNull);
-      expect(BEACON1.udi, beacon.udi);
+      expect(BEACON1.udi, beacon!.udi);
       expect(BEACON1.site_id, beacon.site_id);
       expect(BEACON1.type, beacon.type);
       expect(BEACON1.label, beacon.label);
@@ -117,7 +117,7 @@ void main() {
       // Create the second beacon
       beacon = await controller.createBeacon(null, BEACON2);
       expect(beacon, isNotNull);
-      expect(BEACON2.udi, beacon.udi);
+      expect(BEACON2.udi, beacon!.udi);
       expect(BEACON2.site_id, beacon.site_id);
       expect(BEACON2.type, beacon.type);
       expect(BEACON2.label, beacon.label);
@@ -126,7 +126,7 @@ void main() {
       // Calculate position for one beacon
       var position = await controller.calculatePosition(null, '1', ['00001']);
       expect(position, isNotNull);
-      expect('Point', position['type']);
+      expect('Point', position!['type']);
       expect((position['coordinates'] as List).length, 2);
       expect(0, (position['coordinates'] as List)[0]);
       expect(0, (position['coordinates'] as List)[1]);
@@ -135,7 +135,7 @@ void main() {
       position =
           await controller.calculatePosition(null, '1', ['00001', '00002']);
       expect(position, isNotNull);
-      expect('Point', position['type']);
+      expect('Point', position!['type']);
       expect((position['coordinates'] as List).length, 2);
       expect(1, (position['coordinates'] as List)[0]);
       expect(1, (position['coordinates'] as List)[1]);

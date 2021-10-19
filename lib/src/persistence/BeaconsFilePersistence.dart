@@ -6,8 +6,9 @@ import './BeaconsMemoryPersistence.dart';
 class BeaconsFilePersistence extends BeaconsMemoryPersistence {
   JsonFilePersister<BeaconV1> persister;
 
-  BeaconsFilePersistence([String path]) : super() {
-    persister = JsonFilePersister<BeaconV1>(path);
+  BeaconsFilePersistence([String? path])
+      : persister = JsonFilePersister<BeaconV1>(path),
+        super() {
     loader = persister;
     saver = persister;
   }

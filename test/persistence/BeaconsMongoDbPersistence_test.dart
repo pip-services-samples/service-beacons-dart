@@ -7,8 +7,8 @@ import './BeaconsPersistenceFixture.dart';
 
 void main() {
   group('BeaconsMongoDbPersistence', () {
-    BeaconsMongoDbPersistence persistence;
-    BeaconsPersistenceFixture fixture;
+    late BeaconsMongoDbPersistence persistence;
+    late BeaconsPersistenceFixture fixture;
 
     setUp(() async {
       var mongoUri = Platform.environment['MONGO_SERVICE_URI'];

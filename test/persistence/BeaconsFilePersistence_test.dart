@@ -6,12 +6,13 @@ import './BeaconsPersistenceFixture.dart';
 
 void main() {
   group('BeaconsFilePersistence', () {
-    BeaconsFilePersistence persistence;
-    BeaconsPersistenceFixture fixture;
+    late BeaconsFilePersistence persistence;
+    late BeaconsPersistenceFixture fixture;
 
     setUp(() async {
-      persistence = BeaconsFilePersistence('data/beacons.test.json');
-      persistence.configure(ConfigParams());
+      persistence = BeaconsFilePersistence();
+      persistence.configure(
+          ConfigParams.fromTuples(['path', './data/beacons.test.json']));
 
       fixture = BeaconsPersistenceFixture(persistence);
 

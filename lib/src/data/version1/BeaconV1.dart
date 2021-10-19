@@ -2,22 +2,22 @@ import 'package:pip_services3_commons/pip_services3_commons.dart';
 
 class BeaconV1 implements IStringIdentifiable {
   @override
-  String id;
-  String site_id;
-  String type;
-  String udi;
-  String label;
-  Map<String, dynamic> center; // GeoJson
-  double radius;
+  String? id;
+  String? site_id;
+  String? type;
+  String? udi;
+  String? label;
+  Map<String, dynamic>? center; // GeoJson
+  double? radius;
 
   BeaconV1(
-      {String id,
-      String site_id,
-      String type,
-      String udi,
-      String label,
-      Map<String, dynamic> center,
-      double radius})
+      {String? id,
+      String? site_id,
+      String? type,
+      String? udi,
+      String? label,
+      Map<String, dynamic>? center,
+      double? radius})
       : id = id,
         site_id = site_id,
         type = type,

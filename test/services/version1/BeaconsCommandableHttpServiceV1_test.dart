@@ -38,11 +38,11 @@ var httpConfig = ConfigParams.fromTuples([
 
 void main() {
   group('BeaconsCommandableHttpServiceV1', () {
-    BeaconsMemoryPersistence persistence;
-    BeaconsController controller;
-    BeaconsCommandableHttpServiceV1 service;
-    http.Client rest;
-    String url;
+    late BeaconsMemoryPersistence persistence;
+    late BeaconsController controller;
+    late BeaconsCommandableHttpServiceV1 service;
+    late http.Client rest;
+    late String url;
 
     setUp(() async {
       url = 'http://localhost:3000';
@@ -82,7 +82,7 @@ void main() {
       BeaconV1 beacon1;
 
       // Create the first beacon
-      var resp = await rest.post(url + '/v1/beacons/create_beacon',
+      var resp = await rest.post(Uri.parse(url + '/v1/beacons/create_beacon'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'beacon': BEACON1}));
       var beacon = BeaconV1();
@@ -95,7 +95,7 @@ void main() {
       expect(beacon.center, isNotNull);
 
       // Create the second beacon
-      resp = await rest.post(url + '/v1/beacons/create_beacon',
+      resp = await rest.post(Uri.parse(url + '/v1/beacons/create_beacon'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'beacon': BEACON2}));
       beacon = BeaconV1();
@@ -108,7 +108,7 @@ void main() {
       expect(beacon.center, isNotNull);
 
       // Get all beacons
-      resp = await rest.post(url + '/v1/beacons/get_beacons',
+      resp = await rest.post(Uri.parse(url + '/v1/beacons/get_beacons'),
           headers: {'Content-Type': 'application/json'},
           body: json
               .encode({'filter': FilterParams(), 'paging': PagingParams()}));
@@ -125,7 +125,7 @@ void main() {
       // Update the beacon
       beacon1.label = 'ABC';
 
-      resp = await rest.post(url + '/v1/beacons/update_beacon',
+      resp = await rest.post(Uri.parse(url + '/v1/beacons/update_beacon'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'beacon': beacon1}));
       beacon = BeaconV1();
@@ -135,7 +135,7 @@ void main() {
       expect('ABC', beacon.label);
 
       // Get beacon by udi
-      resp = await rest.post(url + '/v1/beacons/get_beacon_by_udi',
+      resp = await rest.post(Uri.parse(url + '/v1/beacons/get_beacon_by_udi'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'udi': beacon1.udi}));
       beacon = BeaconV1();
@@ -144,7 +144,7 @@ void main() {
       expect(beacon1.id, beacon.id);
 
       // Calculate position for one beacon
-      resp = await rest.post(url + '/v1/beacons/calculate_position',
+      resp = await rest.post(Uri.parse(url + '/v1/beacons/calculate_position'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({
             'site_id': '1',
@@ -159,7 +159,7 @@ void main() {
       expect(0, position['coordinates'][1]);
 
       // Delete the beacon
-      resp = await rest.post(url + '/v1/beacons/delete_beacon_by_id',
+      resp = await rest.post(Uri.parse(url + '/v1/beacons/delete_beacon_by_id'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'beacon_id': beacon1.id}));
       beacon = BeaconV1();
@@ -168,7 +168,7 @@ void main() {
       expect(beacon1.id, beacon.id);
 
       // Try to get deleted beacon
-      resp = await rest.post(url + '/v1/beacons/get_beacon_by_id',
+      resp = await rest.post(Uri.parse(url + '/v1/beacons/get_beacon_by_id'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'beacon_id': beacon1.id}));
       expect(resp.body, isEmpty);
