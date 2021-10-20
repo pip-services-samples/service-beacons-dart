@@ -59,7 +59,7 @@ class BeaconsController
 
     var page = await persistence!.getPageByFilter(correlationId,
         FilterParams.fromTuples(['site_id', siteId, 'udis', udis]), null);
-    beacons = page != null ? page.data : [];
+    beacons = page.data;
 
     var lat = 0.0;
     var lng = 0.0;

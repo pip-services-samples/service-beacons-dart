@@ -69,7 +69,7 @@ class BeaconsMongoDbPersistence
     var filter = {'udi': udi};
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
-    if (filter != null && filter.isNotEmpty) {
+    if (udi.isNotEmpty) {
       selector[r'$query'] = filter;
     }
     query.raw(selector);

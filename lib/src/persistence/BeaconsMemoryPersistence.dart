@@ -63,8 +63,10 @@ class BeaconsMemoryPersistence
   }
 
   @override
-  Future<BeaconV1> getOneByUdi(String? correlationId, String udi) async {
-    var item = items.firstWhere((item) => item.udi == udi);
+  Future<BeaconV1?> getOneByUdi(String? correlationId, String udi) async {
+    BeaconV1? item =
+        items.firstWhere((item) => item.udi == udi, orElse: () => BeaconV1());
+    item = item.udi != null ? item : null;
 
     if (item != null) {
       logger.trace(correlationId, 'Found beacon by %s', [udi]);
