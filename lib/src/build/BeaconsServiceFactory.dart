@@ -5,7 +5,7 @@ import '../persistence/BeaconsMemoryPersistence.dart';
 import '../persistence/BeaconsFilePersistence.dart';
 import '../persistence/BeaconsMongoDbPersistence.dart';
 import '../logic/BeaconsController.dart';
-import '../services/version1/BeaconsCommandableHttpServiceV1.dart';
+import '../services/version1/BeaconsHttpServiceV1.dart';
 
 class BeaconsServiceFactory extends Factory {
   static final MemoryPersistenceDescriptor =
@@ -18,7 +18,7 @@ class BeaconsServiceFactory extends Factory {
       Descriptor('beacons', 'controller', 'default', '*', '1.0');
   static final CommandableHttpServiceV1Descriptor =
       Descriptor('beacons', 'service', 'commandable-http', '*', '1.0');
-  
+
   BeaconsServiceFactory() : super() {
     registerAsType(BeaconsServiceFactory.MemoryPersistenceDescriptor,
         BeaconsMemoryPersistence);
@@ -29,7 +29,6 @@ class BeaconsServiceFactory extends Factory {
     registerAsType(
         BeaconsServiceFactory.ControllerDescriptor, BeaconsController);
     registerAsType(BeaconsServiceFactory.CommandableHttpServiceV1Descriptor,
-        BeaconsCommandableHttpServiceV1);
-    
+        BeaconsHttpServiceV1);
   }
 }

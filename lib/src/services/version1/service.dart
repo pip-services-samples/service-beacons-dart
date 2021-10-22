@@ -1,1 +1,1 @@
-export './BeaconsCommandableHttpServiceV1.dart';
+export 'BeaconsHttpServiceV1.dart';
